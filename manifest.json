@@ -1,0 +1,16 @@
+{
+  "name": "SaveTik",
+  "short_name": "SaveTik",
+  "description": "Download video TikTok tanpa watermark",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ff0050",
+  "background_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "SaveTikTok.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

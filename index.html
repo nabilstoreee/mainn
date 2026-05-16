@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SaveTik - Download video TikTok tanpa watermark gratis dengan kualitas HD. Cepat, aman, dan tanpa login.">
+    <meta name="keywords" content="SaveTik, download video tiktok, tiktok no watermark">
+    <meta name="author" content="Nabil Assihidiqi">
+    <title>SaveTik - Download Video TikTok No Watermark</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="namafileiconanda.png" type="image/png">
+    <link rel="apple-touch-icon" href="namafileiconanda.png">
+    <meta name="theme-color" content="#ff0050">
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: #0f0f0f; 
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(50px);
+            transition: background 0.5s ease;
+        }
+        
+        .glass { 
+            background: rgba(20, 20, 20, 0.7); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-gradient-ig {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient-ig:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.5);
+        }
+        
+        .social-icons a {
+            color: #4b5563;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-shake {
+            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
+        #urlInput:focus, #commentInput:focus, #nameInput:focus, #adminPass:focus {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .spinner {
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-card {
+            background: rgba(30, 30, 30, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        
+        .preview-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: #3b82f6;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .download-btn-green {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.4);
+        }
+        
+        .download-btn-green:active {
+            transform: scale(0.98);
+        }
+
+        .back-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: white;
+        }
+
+        .coming-soon-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        /* Video player styles */
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .video-container:hover .video-overlay {
+            opacity: 1;
+        }
+        
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 2px;
+        }
+        
+        .progress-knob {
+            position: absolute;
+            left: 0%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            text-align: center;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 16px;
+        }
+
+        /* ===== INFO PANEL STYLES ===== */
+        .info-trigger {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 50;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+        
+        .info-trigger:hover {
+            background: rgba(30, 30, 30, 0.95);
+            color: #3b82f6;
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .info-trigger.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            transform: rotate(180deg);
+            border-color: transparent;
+        }
+
+        .info-panel {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 49;
+            width: 340px;
+            max-width: calc(100vw - 48px);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            transform: translateY(-20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .info-panel.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .info-panel-header {
+            position: relative;
+            padding: 28px 24px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+        }
+        
+        .info-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 32px -8px rgba(59, 130, 246, 0.5);
+            position: relative;
+        }
+        
+        .info-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 25px;
+            padding: 3px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.6;
+        }
+        
+        .info-panel-header h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        
+        .info-panel-header p {
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .info-panel-body {
+            padding: 0 24px 24px;
+        }
+        
+        .info-section {
+            margin-bottom: 20px;
+        }
+        
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-section-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(59,130,246,0.3), transparent);
+        }
+        
+        .info-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(59, 130, 246, 0.15);
+            transform: translateX(4px);
+        }
+        
+        .info-card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .info-card-content h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+        
+        .info-card-content p {
+            font-size: 0.75rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        
+        .info-socials {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        
+        .info-social {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .info-social:hover {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .info-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        
+        .info-tag i {
+            font-size: 0.6rem;
+        }
+        
+        .info-panel-footer {
+            padding: 14px 24px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+        
+        .info-panel-footer p {
+            font-size: 0.65rem;
+            color: #4b5563;
+            letter-spacing: 0.05em;
+        }
+        
+        .info-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 48;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        
+        .info-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes infoPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+        }
+        
+        .info-trigger.pulse {
+            animation: infoPulse 2s infinite;
+        }
+
+        /* ===== RATING TOGGLE BUTTON ===== */
+        .rating-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rating-toggle-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(245, 158, 11, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .rating-toggle-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .rating-toggle-btn:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .rating-toggle-btn.active {
+            background: rgba(251, 191, 36, 0.08);
+            border-color: rgba(251, 191, 36, 0.25);
+        }
+        
+        .rating-toggle-btn i {
+            font-size: 1.2rem;
+            color: #fbbf24;
+            transition: transform 0.4s ease;
+        }
+        
+        .rating-toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+        
+        .rating-toggle-text {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        
+        .rating-toggle-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .rating-toggle-stars i {
+            font-size: 0.7rem;
+            color: #fbbf24;
+        }
+        
+        .rating-toggle-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .rating-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .rating-content.open {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        /* ===== RATING & COMMENT STYLES ===== */
+        .rating-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        
+        .rating-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .rating-header h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rating-header h3 i {
+            color: #fbbf24;
+        }
+        
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .rating-big-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        
+        .rating-big-stars {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+        
+        .rating-big-stars i {
+            font-size: 0.9rem;
+            color: #fbbf24;
+        }
+        
+        .rating-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .rating-bars {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .rating-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rating-bar-label {
+            font-size: 0.7rem;
+            color: #6b7280;
+            font-weight: 600;
+            width: 20px;
+            text-align: right;
+        }
+        
+        .rating-bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .rating-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .rating-form {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .star-rating-input {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+        
+        .star-rating-input i {
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .star-rating-input i.hovered,
+        .star-rating-input i.selected {
+            color: #fbbf24;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transform: scale(1.15);
+        }
+        
+        .star-rating-input i:hover {
+            transform: scale(1.25);
+        }
+        
+        .rating-input-group {
+            margin-bottom: 12px;
+        }
+        
+        .rating-input-group input,
+        .rating-input-group textarea {
+            width: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .rating-input-group input:focus,
+        .rating-input-group textarea:focus {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .rating-input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn-submit-rating {
+            width: 100%;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #0f0f0f;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-submit-rating:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.3);
+        }
+        
+        .btn-submit-rating:active {
+            transform: scale(0.98);
+        }
+        
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .review-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease forwards;
+            position: relative;
+        }
+        
+        .review-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+            transform: translateX(4px);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .review-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .review-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .review-name-time {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .review-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        
+        .review-time {
+            font-size: 0.7rem;
+            color: #4b5563;
+        }
+        
+        .review-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .review-stars i {
+            font-size: 0.7rem;
+            color: #fbbf24;
+        }
+        
+        .review-stars i.empty {
+            color: rgba(255,255,255,0.08);
+        }
+        
+        .review-text {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            padding-left: 46px;
+        }
+        
+        .review-like-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            margin-left: 46px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .review-like-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .review-like-btn.liked {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
+        .review-like-btn.liked i {
+            animation: heartBeat 0.4s ease;
+        }
+        
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* ===== ADMIN DELETE BUTTON ===== */
+        .admin-delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .review-item:hover .admin-delete-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .admin-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            transform: scale(1.1);
+        }
+
+        /* ===== ADMIN LOGIN PANEL ===== */
+        .admin-trigger {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+        
+        .admin-trigger:hover {
+            background: rgba(30, 30, 30, 0.9);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .admin-trigger.logged-in {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-color: transparent;
+        }
+
+        .admin-login-panel {
+            position: fixed;
+            bottom: 76px;
+            right: 24px;
+            z-index: 49;
+            width: 280px;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 80px -20px rgba(0,0,0,0.9);
+        }
+        
+        .admin-login-panel.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .admin-login-panel h4 {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-login-panel h4 i {
+            color: #ef4444;
+        }
+        
+        .admin-login-panel input {
+            width: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: white;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-login-panel input:focus {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        
+        .admin-login-panel button {
+            width: 100%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-login-panel button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(239, 68, 68, 0.4);
+        }
+        
+        .admin-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .admin-status span {
+            color: #22c55e;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-grid flex items-center justify-center min-h-screen p-4 sm:p-8">
+
+    <!-- Info Trigger Button -->
+    <button id="infoTrigger" class="info-trigger pulse" aria-label="Informasi Website">
+        <i class="fas fa-info"></i>
+    </button>
+
+    <!-- Info Backdrop -->
+    <div id="infoBackdrop" class="info-backdrop"></div>
+
+    <!-- Info Panel -->
+    <div id="infoPanel" class="info-panel">
+        <div class="info-panel-header">
+            <div class="info-avatar">
+                <i class="fas fa-code"></i>
+            </div>
+            <h3>Nabil Assihidiqi</h3>
+            <p>Full-Stack Developer</p>
+        </div>
+        
+        <div class="info-panel-body">
+            <!-- About Website -->
+            <div class="info-section">
+                <div class="info-section-label">Tentang Website</div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h4>SaveTik</h4>
+                        <p>Platform download video TikTok tanpa watermark dengan kualitas HD. Cepat, aman, dan tanpa login.</p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px; display: flex; flex-wrap: wrap;">
+                    <span class="info-tag"><i class="fas fa-check"></i> No Watermark</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> HD Quality</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> Gratis</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> Aman</span>
+                </div>
+            </div>
+            
+            <!-- Developer Info -->
+            <div class="info-section">
+                <div class="info-section-label">Developer</div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h4>Nabil Assihidiqi</h4>
+                        <p>Pengembang web & mobile application. Fokus pada pengalaman pengguna yang modern dan intuitif.</p>
+                    </div>
+                </div>
+                <div class="info-socials" style="margin-top: 10px;">
+                    <a href="https://github.com/" target="_blank" class="info-social" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://t.me/NabilOfficialShopp" target="_blank" class="info-social" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://tiktok.com/@" target="_blank" class="info-social" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="mailto:anakselatan34@gmail.com" class="info-social" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tech Stack -->
+            <div class="info-section">
+                <div class="info-section-label">Teknologi</div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span class="info-tag"><i class="fab fa-html5"></i> HTML5</span>
+                    <span class="info-tag"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+                    <span class="info-tag"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="info-tag"><i class="fas fa-server"></i> API</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel-footer">
+            <p>© 2026 SaveTik • Dibuat dengan <i class="fas fa-heart" style="color: #ef4444; font-size: 0.6rem;"></i> oleh Nabil</p>
+        </div>
+    </div>
+
+    <!-- Admin Trigger -->
+    <button id="adminTrigger" class="admin-trigger" title="Admin Panel">
+        <i class="fas fa-shield-alt"></i>
+    </button>
+
+    <!-- Admin Login Panel -->
+    <div id="adminLoginPanel" class="admin-login-panel">
+        <h4><i class="fas fa-lock"></i> Admin Login</h4>
+        <input type="password" id="adminPass" placeholder="Masukkan password...">
+        <button onclick="loginAdmin()">Login</button>
+        <div class="admin-status" id="adminStatus">Status: <span>User Biasa</span></div>
+    </div>
+
+    <!-- Background Glows -->
+    <div id="mainGlow" class="glow top-10 left-10"></div>
+    <div class="glow bottom-10 right-10" style="background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);"></div>
+
+    <div class="max-w-2xl w-full glass p-6 sm:p-10 rounded-[2.5rem] relative overflow-hidden">
+        
+        <!-- Platform Switcher -->
+        <div class="flex p-1 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 mb-8 max-w-[320px] mx-auto relative z-20">
+            <button id="tab-tiktok" class="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg flex items-center justify-center gap-2">
+                <i class="fab fa-tiktok"></i>TikTok
+            </button>
+            <button id="tab-instagram" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2">
+                <i class="fab fa-instagram"></i>Instagram
+            </button>
+        </div>
+
+        <!-- Input Section -->
+        <div id="inputSection" class="block animate-fade-in">
+            <header class="text-center mb-10">
+                <div class="inline-block p-3 rounded-2xl bg-white/5 mb-4 border border-white/10">
+                    <div id="headerIcon">
+                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-3">
+                    <span id="brandTitle" class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
+    SaveTik
+</span>
+                </h1>
+                <p id="brandDesc" class="text-gray-400 font-medium tracking-wide">Fast, Secure, & No Watermark</p>
+            </header>
+                
+<div class="space-y-4 relative z-10">
+    <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i id="inputIcon" class="fab fa-tiktok text-lg text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
+        </div>
+        <input type="text" id="urlInput" placeholder="Tempel tautan video disini..." class="w-full pl-12 pr-28 py-5 rounded-2xl bg-[#161616] border border-white/10 focus:border-blue-500/50 focus:outline-none transition-all text-white placeholder-gray-600 text-sm">
+        
+        <!-- Tombol Tempel -->
+        <button id="pasteBtn" class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 border border-blue-500/40 text-blue-400 text-sm font-medium transition-all flex items-center gap-2 backdrop-blur-sm">
+            <i class="fas fa-paste"></i> Tempel
+        </button>
+    </div>
+ 
+    <button id="btnDownload" class="w-full btn-gradient text-white font-extrabold text-lg py-5 rounded-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all">
+        <span id="btnText">Download Video</span>
+        <svg id="btnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        <div id="btnLoader" class="spinner hidden" style="width: 24px; height: 24px; border-width: 3px;"></div>
+    </button>
+  </div>
+</div>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden animate-fade-in relative">
+            
+            <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/5">
+                <button id="backToHomeBtn" class="back-btn text-gray-400 flex items-center gap-2 transition-all group">
+                    <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    <span class="font-medium text-sm">Kembali</span>
+                </button>
+                <div class="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full">
+                    <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Nabil Assihidiqi</span>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="hidden flex flex-col items-center justify-center py-20">
+                <div class="spinner mb-4"></div>
+                <p class="text-gray-400 animate-pulse text-sm font-medium tracking-wide">Sabar Sayang...</p>
+            </div>
+            
+            <!-- Error -->
+            <div id="errorMsg" class="hidden p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3 text-red-400 mb-4">
+                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h4 class="font-semibold text-red-300 text-sm">Error</h4>
+                    <p id="errorText" class="text-xs mt-1 text-red-400/80"></p>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div id="content" class="hidden space-y-6"></div>
+        </div>
+
+        <!-- Pemisah garis -->
+            <div class="relative my-6">
+           <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-white/10"></div>
+        </div>
+          <div class="relative flex justify-center text-sm">
+        <span class="px-3 bg-transparent text-gray-500 text-xs">SaveTik</span>
+        </div>
+    </div>
+
+            <!-- ===== RATING TOGGLE BUTTON ===== -->
+            <button class="rating-toggle-btn" id="ratingToggleBtn">
+            <i class="fas fa-star"></i>
+            <span class="rating-toggle-text">Ulasan & Rating</span>
+            <div class="rating-toggle-stars" id="toggleStars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <span class="rating-toggle-count" id="toggleCount">0 ulasan</span>
+        </button>
+
+        <!-- ===== RATING CONTENT (Hidden by default) ===== -->
+        <div class="rating-content" id="ratingContent">
+            <div class="rating-section">
+                <!-- Rating Summary -->
+                <div class="rating-summary">
+                    <div>
+                        <div class="rating-big-number" id="avgRating">0.0</div>
+                        <div class="rating-big-stars" id="summaryStars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="rating-count" id="totalReviewsText">0 ulasan</div>
+                    </div>
+                    <div class="rating-bars" id="ratingBars">
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">5</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="5"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">4</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="4"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">3</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="3"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">2</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="2"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">1</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="1"></div></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Form -->
+                <div class="rating-form">
+                    <div class="star-rating-input" id="starRatingInput">
+                        <i class="fas fa-star" data-value="1"></i>
+                        <i class="fas fa-star" data-value="2"></i>
+                        <i class="fas fa-star" data-value="3"></i>
+                        <i class="fas fa-star" data-value="4"></i>
+                        <i class="fas fa-star" data-value="5"></i>
+                    </div>
+                    <div class="rating-input-group">
+                        <input type="text" id="nameInput" placeholder="Nama kamu..." maxlength="30">
+                    </div>
+                    <div class="rating-input-group">
+                        <textarea id="commentInput" placeholder="Bagikan pengalaman kamu menggunakan SaveTik..." maxlength="300"></textarea>
+                    </div>
+                    <button class="btn-submit-rating" onclick="submitReview()">
+                        <i class="fas fa-paper-plane"></i>
+                        Kirim Ulasan
+                    </button>
+                </div>
+                
+                <!-- Reviews List -->
+                <div class="reviews-list" id="reviewsList"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="mainFooter" class="mt-8 pt-6 border-t border-white/5">
+            <p class="text-center text-[10px] text-gray-600 uppercase tracking-[0.2em] mb-4">
+                © 2026 SaveTik • Downloader
+            </p>
+            
+            <div class="social-icons flex gap-6 justify-center">
+                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="Github">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://t.me/NabilOfficialShopp" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://tiktok.com/@" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="mailto:anakselatan34@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Coming Soon Overlay -->
+    <div id="comingSoonOverlay" class="coming-soon-overlay hidden">
+        <div class="text-center p-8 max-w-sm">
+            <div class="w-20 h-20 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-3xl mx-auto flex items-center justify-center mb-6 shadow-lg">
+                <i class="fab fa-instagram text-4xl text-white"></i>
+            </div>
+            <h3 class="text-white font-bold text-2xl mb-3">Segera Hadir!</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                Maaf, fitur download Instagram saat ini belum tersedia. Akan segera hadir nanti! 🚀
+            </p>
+            <button id="backToTikTokBtn" class="px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl transition-all text-sm shadow-lg shadow-blue-600/25">
+                Kembali ke TikTok
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'tiktok';
+        let currentData = null;
+        let infoPanelOpen = false;
+        let adminPanelOpen = false;
+        let isAdmin = false;
+        let selectedRating = 0;
+        let reviews = [];
+        
+        const API_TIKTOK = 'https://www.tikwm.com/api/';
+        const ADMIN_PASSWORD = 'nabil123'; // Ganti password ini!
+
+        // Demo reviews data
+        const demoReviews = [
+            {
+                id: 1,
+                name: 'Ahmad Rizky',
+                rating: 5,
+                text: 'Website ini sangat membantu! Download video TikTok jadi super cepat dan kualitasnya HD banget. Recommended!',
+                time: '10 hari lalu',
+                likes: 995,
+                liked: false
+            },
+            {
+                id: 2,
+                name: 'Siti Nurhaliza',
+                rating: 5,
+                text: 'Desainnya keren dan modern. Gampang banget dipakai, cuma paste link langsung bisa download. Mantap!',
+                time: '20 hari lalu',
+                likes: 2000,
+                liked: false
+            }
+        ];
+
+        function initReviews() {
+            const saved = localStorage.getItem('savetik_reviews');
+            if (saved) {
+                reviews = JSON.parse(saved);
+            } else {
+                reviews = [...demoReviews];
+                saveReviews();
+            }
+            renderReviews();
+            updateRatingSummary();
+            updateToggleButton();
+        }
+
+        function saveReviews() {
+            localStorage.setItem('savetik_reviews', JSON.stringify(reviews));
+        }
+
+        function toggleRatingSection() {
+            const content = document.getElementById('ratingContent');
+            const btn = document.getElementById('ratingToggleBtn');
+            
+            content.classList.toggle('open');
+            btn.classList.toggle('active');
+        }
+
+        function updateToggleButton() {
+            const total = reviews.length;
+            const avg = total > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1) : '0.0';
+            const roundedAvg = Math.round(parseFloat(avg));
+            
+            document.getElementById('toggleCount').textContent = `${total} ulasan`;
+            
+            const stars = document.getElementById('toggleStars');
+            stars.innerHTML = Array(5).fill(0).map((_, i) => 
+                `<i class="fas fa-star" style="color: ${i < roundedAvg ? '#fbbf24' : 'rgba(255,255,255,0.1)'}"></i>`
+            ).join('');
+        }
+
+        // ===== ADMIN FUNCTIONS =====
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminLoginPanel');
+            adminPanelOpen = !adminPanelOpen;
+            
+            if (adminPanelOpen) {
+                panel.classList.add('open');
+            } else {
+                panel.classList.remove('open');
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPass').value;
+            const trigger = document.getElementById('adminTrigger');
+            const status = document.getElementById('adminStatus');
+            
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                trigger.classList.add('logged-in');
+                trigger.innerHTML = '<i class="fas fa-user-shield"></i>';
+                status.innerHTML = 'Status: <span>User Admin</span>';
+                document.getElementById('adminPass').value = '';
+                showToast('Login admin berhasil!', 'success');
+                renderReviews(); // Re-render to show delete buttons
+                setTimeout(toggleAdminPanel, 800);
+            } else {
+                showToast('Password salah!', 'error');
+                document.getElementById('adminPass').value = '';
+            }
+        }
+
+        function deleteReview(reviewId) {
+            if (!isAdmin) return;
+            
+            if (confirm('Yakin hapus ulasan ini?')) {
+                reviews = reviews.filter(r => r.id !== reviewId);
+                saveReviews();
+                renderReviews();
+                updateRatingSummary();
+                updateToggleButton();
+                showToast('Ulasan dihapus', 'success');
+            }
+        }
+
+        function toggleInfoPanel() {
+            const panel = document.getElementById('infoPanel');
+            const backdrop = document.getElementById('infoBackdrop');
+            const trigger = document.getElementById('infoTrigger');
+            
+            infoPanelOpen = !infoPanelOpen;
+            
+            if (infoPanelOpen) {
+                panel.classList.add('open');
+                backdrop.classList.add('open');
+                trigger.classList.add('active');
+                trigger.classList.remove('pulse');
+            } else {
+                panel.classList.remove('open');
+                backdrop.classList.remove('open');
+                trigger.classList.remove('active');
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (infoPanelOpen) toggleInfoPanel();
+                if (adminPanelOpen) toggleAdminPanel();
+            }
+        });
+
+        function hoverRating(value) {
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('hovered');
+                } else {
+                    star.classList.remove('hovered');
+                }
+            });
+        }
+
+        function resetHover() {
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach(star => {
+                star.classList.remove('hovered');
+            });
+        }
+
+        function setRating(value) {
+            selectedRating = value;
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        function submitReview() {
+            const name = document.getElementById('nameInput').value.trim();
+            const comment = document.getElementById('commentInput').value.trim();
+            
+            if (selectedRating === 0) {
+                showToast('Pilih rating bintang dulu!', 'warning');
+                return;
+            }
+            if (!name) {
+                showToast('Masukkan nama kamu!', 'warning');
+                document.getElementById('nameInput').focus();
+                return;
+            }
+            if (!comment) {
+                showToast('Masukkan komentar kamu!', 'warning');
+                document.getElementById('commentInput').focus();
+                return;
+            }
+
+            const newReview = {
+                id: Date.now(),
+                name: name,
+                rating: selectedRating,
+                text: comment,
+                time: 'Baru saja',
+                likes: 0,
+                liked: false
+            };
+
+            reviews.unshift(newReview);
+            saveReviews();
+            renderReviews();
+            updateRatingSummary();
+            updateToggleButton();
+
+            // Reset form
+            document.getElementById('nameInput').value = '';
+            document.getElementById('commentInput').value = '';
+            setRating(0);
+            
+            showToast('Ulasan berhasil dikirim! Terima kasih ⭐', 'success');
+        }
+
+        function toggleLike(reviewId) {
+            const review = reviews.find(r => r.id === reviewId);
+            if (review) {
+                review.liked = !review.liked;
+                review.likes += review.liked ? 1 : -1;
+                saveReviews();
+                renderReviews();
+            }
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            if (reviews.length === 0) {
+                list.innerHTML = '<p class="text-center text-gray-600 text-sm py-8">Belum ada ulasan. Jadilah yang pertama!</p>';
+                return;
+            }
+
+            list.innerHTML = reviews.map(review => {
+                const stars = Array(5).fill(0).map((_, i) => 
+                    `<i class="fas fa-star ${i < review.rating ? '' : 'empty'}"></i>`
+                ).join('');
+
+                const deleteBtn = isAdmin ? 
+                    `<button class="admin-delete-btn" onclick="deleteReview(${review.id})" title="Hapus ulasan">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>` : '';
+
+                return `
+                    <div class="review-item">
+                        ${deleteBtn}
+                        <div class="review-header">
+                            <div class="review-user">
+                                <div class="review-avatar">${escapeHtml(review.name.charAt(0).toUpperCase())}</div>
+                                <div class="review-name-time">
+                                    <span class="review-name">${escapeHtml(review.name)}</span>
+                                    <span class="review-time">${review.time}</span>
+                                </div>
+                            </div>
+                            <div class="review-stars">${stars}</div>
+                        </div>
+                        <p class="review-text">${escapeHtml(review.text)}</p>
+                        <button class="review-like-btn ${review.liked ? 'liked' : ''}" onclick="toggleLike(${review.id})">
+                            <i class="${review.liked ? 'fas' : 'far'} fa-heart"></i>
+                            <span>${review.likes}</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateRatingSummary() {
+            const total = reviews.length;
+            const avg = total > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1) : '0.0';
+            
+            document.getElementById('avgRating').textContent = avg;
+            document.getElementById('totalReviewsText').textContent = `${total} ulasan`;
+
+            const summaryStars = document.getElementById('summaryStars');
+            const roundedAvg = Math.round(parseFloat(avg));
+            summaryStars.innerHTML = Array(5).fill(0).map((_, i) => 
+                `<i class="fas fa-star" style="color: ${i < roundedAvg ? '#fbbf24' : 'rgba(255,255,255,0.1)'}"></i>`
+            ).join('');
+
+            const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+            reviews.forEach(r => counts[r.rating]++);
+            
+            document.querySelectorAll('.rating-bar-fill').forEach(bar => {
+                const star = parseInt(bar.dataset.star);
+                const pct = total > 0 ? (counts[star] / total * 100) : 0;
+                bar.style.width = pct + '%';
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'success') {
+            const existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+
+            const colors = {
+                success: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                error: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                background: ${colors[type] || colors.warning};
+                color: white;
+                font-weight: 700;
+                font-size: 0.85rem;
+                padding: 14px 24px;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+                z-index: 200;
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                white-space: nowrap;
+            `;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.warning}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        function switchTab(mode) {
+            currentMode = mode;
+            const tabTik = document.getElementById('tab-tiktok');
+            const tabIg = document.getElementById('tab-instagram');
+            const brandTitle = document.getElementById('brandTitle');
+            const brandDesc = document.getElementById('brandDesc');
+            const inputIcon = document.getElementById('inputIcon');
+            const urlInput = document.getElementById('urlInput');
+            const btnDownload = document.getElementById('btnDownload');
+            const mainGlow = document.getElementById('mainGlow');
+            const headerIcon = document.getElementById('headerIcon');
+            const comingSoon = document.getElementById('comingSoonOverlay');
+
+            urlInput.value = '';
+            clearError();
+            backToHome();
+
+            if (mode === 'instagram') {
+                tabIg.className = "flex-1 py-2.5 rounded-xl text-sm font-bold transition-all bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg flex items-center justify-center gap-2";
+                tabTik.className = "flex-1 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                
+                brandTitle.innerText = "SaveGram";
+                brandDesc.innerText = "Download Reels & Photo Instagram";
+                inputIcon.className = "fab fa-instagram text-lg text-gray-500 group-focus-within:text-purple-500 transition-colors";
+                urlInput.placeholder = "Tempel tautan video disini...";
+                
+                btnDownload.classList.remove('btn-gradient');
+                btnDownload.classList.add('btn-gradient-ig');
+                mainGlow.style.background = "radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%)";
+                
+                headerIcon.innerHTML = `<i class="fab fa-instagram text-3xl text-pink-500"></i>`;
+                
+                comingSoon.classList.remove('hidden');
+                
+            } else {
+                tabTik.className = "flex-1 py-2.5 rounded-xl text-sm font-bold transition-all bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg flex items-center justify-center gap-2";
+                tabIg.className = "flex-1 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                
+                brandTitle.innerText = "SaveTik";
+                brandDesc.innerText = "Fast, Secure, & No Watermark";
+                inputIcon.className = "fab fa-tiktok text-lg text-gray-500 group-focus-within:text-blue-500 transition-colors";
+                urlInput.placeholder = "Tempel tautan video disini...";
+                
+                btnDownload.classList.remove('btn-gradient-ig');
+                btnDownload.classList.add('btn-gradient');
+                mainGlow.style.background = "radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)";
+                
+                headerIcon.innerHTML = `<svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>`;
+                
+                comingSoon.classList.add('hidden');
+            }
+        }
+
+        function backToHome() {
+            const inputSection = document.getElementById('inputSection');
+            const resultSection = document.getElementById('resultSection');
+            const comingSoon = document.getElementById('comingSoonOverlay');
+            const loading = document.getElementById('loading');
+            const errorMsg = document.getElementById('errorMsg');
+            const content = document.getElementById('content');
+            
+            inputSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            comingSoon.classList.add('hidden');
+            
+            loading.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+            content.classList.add('hidden');
+            content.innerHTML = '';
+            currentData = null;
+        }
+
+        async function handleDownload() {
+            if (currentMode === 'instagram') {
+                showComingSoon();
+                return;
+            }
+            await downloadTikTok();
+        }
+
+        function showComingSoon() {
+            const comingSoon = document.getElementById('comingSoonOverlay');
+            comingSoon.classList.remove('hidden');
+        }
+
+        function showError(message) {
+            const inputWrapper = document.querySelector('.group');
+            const urlInput = document.getElementById('urlInput');
+            
+            inputWrapper.classList.add('animate-shake');
+            urlInput.classList.add('border-red-500/50');
+            
+            const existing = inputWrapper.querySelector('.error-tooltip');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'absolute -top-12 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xl animate-fade-in z-50 whitespace-nowrap error-tooltip';
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    ${message}
+                </div>
+            `;
+            
+            inputWrapper.appendChild(toast);
+            if (navigator.vibrate) navigator.vibrate([50, 100, 50]);
+
+            setTimeout(() => {
+                inputWrapper.classList.remove('animate-shake');
+                urlInput.classList.remove('border-red-500/50');
+                toast.remove();
+            }, 3000);
+        }
+
+        function clearError() {
+            const inputWrapper = document.querySelector('.group');
+            const urlInput = document.getElementById('urlInput');
+            const existing = inputWrapper.querySelector('.error-tooltip');
+            if (existing) existing.remove();
+            urlInput.classList.remove('border-red-500/50');
+        }
+
+        function formatNumber(num) {
+            if (!num) return '0';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        // Tombol Paste - LANGSUNG BERHASIL
+        const pasteBtn = document.getElementById('pasteBtn');
+        if (pasteBtn) {
+        pasteBtn.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (text && text.trim()) {
+                document.getElementById('urlInput').value = text.trim();
+                showToast('Link berhasil ditempel!', 'success');
+            } else {
+                showToast('Clipboard kosong', 'error');
+            }
+        } catch (err) {
+            showToast('Fitur ini belum tersedia', 'error');
+        }
+    });
+}
+
+        async function downloadTikTok() {
+            const url = document.getElementById('urlInput').value.trim();
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnLoader = document.getElementById('btnLoader');
+            const btnDownload = document.getElementById('btnDownload');
+            
+            if (!url) {
+                showError('Masukkan link TikTok dulu!');
+                return;
+            }
+            
+            if (!url.includes('tiktok.com')) {
+                showError('Link tidak valid! Pastikan link dari TikTok.');
+                return;
+            }
+
+            btnDownload.disabled = true;
+            btnText.textContent = 'Memproses...';
+            btnIcon.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${API_TIKTOK}?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                
+                if (data.code !== 0 || !data.data) {
+                    throw new Error('Gagal mengambil data video. Coba link lain.');
+                }
+
+                currentData = data.data;
+                showResult(currentData);
+                
+            } catch (error) {
+                showError(error.message || 'Terjadi kesalahan. Coba lagi nanti.');
+            } finally {
+                btnDownload.disabled = false;
+                btnText.textContent = 'Download Video';
+                btnIcon.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+            }
+        }
+
+        function showResult(data) {
+            const inputSection = document.getElementById('inputSection');
+            const resultSection = document.getElementById('resultSection');
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            
+            inputSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            loading.classList.add('hidden');
+            content.classList.remove('hidden');
+
+            const cover = data.cover || data.origin_cover;
+            const play = data.play;
+            const wmplay = data.wmplay;
+            const music = data.music;
+            const title = data.title || 'SaveTik';
+            const authorId = data.author?.unique_id || '';
+            const diggCount = data.digg_count || 0;
+            const shareCount = data.share_count || 0;
+            const playCount = data.play_count || 0;
+            const duration = data.duration || 0;
+
+            const mins = Math.floor(duration / 60);
+            const secs = duration % 60;
+            const durationStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            content.innerHTML = `
+                <div class="result-card">
+                    <div class="video-container relative aspect-video bg-black">
+                        <video 
+                            id="previewVideo"
+                            src="${play}" 
+                            poster="${cover}"
+                            class="w-full h-full object-cover"
+                            preload="metadata"
+                        ></video>
+                        
+                        <div id="videoOverlay" class="video-overlay" style="opacity: 1;">
+                            <div class="play-btn" onclick="toggleVideo()">
+                                <svg id="playIcon" class="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="pauseIcon" class="w-6 h-6 text-black hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="video-controls">
+                            <span class="text-white text-xs font-medium" id="timeDisplay">0:00/${durationStr}</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                                <div class="progress-knob" id="progressKnob"></div>
+                            </div>
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                            </svg>
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                            <span class="preview-badge" style="position: static;">Preview</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <h3 class="text-white font-bold text-base leading-snug mb-2 line-clamp-2">${escapeHtml(title)}</h3>
+                        <a href="https://tiktok.com/@${authorId}" target="_blank" class="text-blue-400 text-sm font-medium hover:underline">
+                            @${authorId}
+                        </a>
+                        
+                        <div class="stats-grid">
+                            <div>
+                                <div class="text-gray-500 text-[10px] uppercase tracking-wider font-semibold mb-1">Likes</div>
+                                <div class="text-white font-bold text-lg">${formatNumber(diggCount)}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500 text-[10px] uppercase tracking-wider font-semibold mb-1">Shares</div>
+                                <div class="text-white font-bold text-lg">${formatNumber(shareCount)}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500 text-[10px] uppercase tracking-wider font-semibold mb-1">Views</div>
+                                <div class="text-white font-bold text-lg">${formatNumber(playCount)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2 my-3">
+                            <button id="copyCaptionBtn" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl py-2.5 text-sm font-medium text-gray-300 transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-copy"></i> Copy Caption
+                            </button>
+                            <button id="shareBtn" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl py-2.5 text-sm font-medium text-gray-300 transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="px-5 pb-5 space-y-3">
+                        <a href="${play}" target="_blank" download class="block w-full download-btn-green text-white font-extrabold text-base py-4 rounded-2xl text-center flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            Download No Watermark
+                        </a>
+                        
+                        <a href="${wmplay}" target="_blank" download class="block w-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-bold text-sm py-3.5 rounded-2xl text-center transition-all">
+                            Download With Watermark
+                        </a>
+                        
+                        ${music ? `
+                        <a href="${music}" target="_blank" download class="block w-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-bold text-sm py-3.5 rounded-2xl text-center transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"></path>
+                            </svg>
+                            Download Audio
+                        </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            setupVideoPlayer();
+            
+            setTimeout(() => {
+                    const copyCaptionBtn = document.getElementById('copyCaptionBtn');
+                        const shareBtn = document.getElementById('shareBtn');
+
+if (copyCaptionBtn) {
+    copyCaptionBtn.onclick = () => {
+        const caption = document.querySelector('.result-card h3')?.innerText || '';
+        
+        // Cara 1: Clipboard API
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(caption).catch(() => {
+                // Cara 2: Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = caption;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Caption berhasil disalin!', 'success');
+            });
+        } else {
+            // Cara 2 langsung
+            const textarea = document.createElement('textarea');
+            textarea.value = caption;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Caption berhasil disalin!', 'success');
+        }
+    };
+}
+    
+            if (shareBtn) {
+                    if (navigator.share) {
+                        shareBtn.onclick = () => {
+                            navigator.share({ title: title, url: play }).catch(() => {});
+                        };
+                    } else {
+                        shareBtn.onclick = () => {
+                            navigator.clipboard.writeText(play);
+                            showToast('Link video disalin!', 'success');
+                        };
+                    }
+                }
+            }, 100);
+        }
+        
+        function setupVideoPlayer() {
+            const video = document.getElementById('previewVideo');
+            const overlay = document.getElementById('videoOverlay');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            const progressFill = document.getElementById('progressFill');
+            const progressKnob = document.getElementById('progressKnob');
+            const timeDisplay = document.getElementById('timeDisplay');
+
+            if (!video) return;
+
+            video.addEventListener('timeupdate', () => {
+                const progress = (video.currentTime / video.duration) * 100;
+                if (progressFill) progressFill.style.width = progress + '%';
+                if (progressKnob) progressKnob.style.left = progress + '%';
+                
+                const mins = Math.floor(video.currentTime / 60);
+                const secs = Math.floor(video.currentTime % 60);
+                const totalMins = Math.floor(video.duration / 60) || 0;
+                const totalSecs = Math.floor(video.duration % 60) || 0;
+                if (timeDisplay) timeDisplay.textContent = `${mins}:${secs.toString().padStart(2, '0')}/${totalMins}:${totalSecs.toString().padStart(2, '0')}`;
+            });
+            
+            video.addEventListener('play', () => {
+                if (playIcon) playIcon.classList.add('hidden');
+                if (pauseIcon) pauseIcon.classList.remove('hidden');
+                if (overlay) overlay.style.opacity = '0';
+            });
+
+            video.addEventListener('pause', () => {
+                if (playIcon) playIcon.classList.remove('hidden');
+                if (pauseIcon) pauseIcon.classList.add('hidden');
+                if (overlay) overlay.style.opacity = '1';
+            });
+
+            video.addEventListener('ended', () => {
+                if (playIcon) playIcon.classList.remove('hidden');
+                if (pauseIcon) pauseIcon.classList.add('hidden');
+                if (overlay) overlay.style.opacity = '1';
+            });
+        }
+
+        function toggleVideo() {
+            const video = document.getElementById('previewVideo');
+            if (!video) return;
+            
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize reviews
+            initReviews();
+            
+            // Set current year in footer
+            const footerYear = document.querySelector('footer p');
+            if (footerYear) {
+                footerYear.innerHTML = footerYear.innerHTML.replace('2026', new Date().getFullYear());
+            }
+            
+            // Setup event listeners
+            document.getElementById('tab-tiktok').onclick = () => switchTab('tiktok');
+            document.getElementById('tab-instagram').onclick = () => switchTab('instagram');
+            document.getElementById('btnDownload').onclick = handleDownload;
+            document.getElementById('backToHomeBtn').onclick = backToHome;
+            document.getElementById('ratingToggleBtn').onclick = toggleRatingSection;
+            document.getElementById('infoTrigger').onclick = toggleInfoPanel;
+            document.getElementById('adminTrigger').onclick = toggleAdminPanel;
+            document.getElementById('backToTikTokBtn').onclick = () => switchTab('tiktok');
+            
+            // Setup rating star events
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach(star => {
+                star.onclick = () => setRating(parseInt(star.dataset.value));
+                star.onmouseenter = () => hoverRating(parseInt(star.dataset.value));
+                star.onmouseleave = resetHover;
+            });
+            
+            // Setup enter key on URL input
+            document.getElementById('urlInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleDownload();
+            });
+            
+            // Setup enter key on admin password
+            document.getElementById('adminPass').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') loginAdmin();
+            });
+        });
+        
+    </script>
+</body>
+</html>
